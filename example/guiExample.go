@@ -39,4 +39,6 @@ func main() {
 	folder := gui.AddFolder("folder")
 	folder.Open()
 	folder.Add(&obj, "W").Name("Function in a folder")
+
+	<-make(chan bool) // Prevent program from exiting
 }
