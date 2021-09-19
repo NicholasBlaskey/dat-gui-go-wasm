@@ -38,7 +38,7 @@ func main() {
 	// Add a folder and add a field to it..
 	folder := gui.AddFolder("folder")
 	folder.Open()
-	folder.Add(&obj, "W").Name("Function in a folder")
+	folder.Add(&obj, "Fun").Name("Function in a folder (alert)")
 
 	<-make(chan bool) // Prevent program from exiting
 }
