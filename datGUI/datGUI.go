@@ -44,7 +44,7 @@ func (g *GUI) Close() {
 	g.JSGUI.Call("close")
 }
 
-func (g *GUI) Add(obj interface{}, fieldName string) *controller {
+func (g *GUI) Add(obj interface{}, fieldName string) *Controller {
 	// Get our field value.
 	structVal := reflect.Indirect(reflect.ValueOf(obj))
 	fieldVal := structVal.FieldByName(fieldName)
@@ -79,9 +79,9 @@ func (g *GUI) Add(obj interface{}, fieldName string) *controller {
 	jsObj := js.ValueOf(jsObjMap)
 
 	// We need this changeFunction since we will need to set the value again with
-	// the new javascript controller when calls happen of both .min and .max for
+	// the new javascript Controller when calls happen of both .min and .max for
 	// some reason.
-	c := &controller{}
+	c := &Controller{}
 	c.JSController = g.JSGUI.Call("add", jsObj, fieldName)
 	c.changeFunc = func(jsController js.Value) {
 		jsController.Call("onChange", js.FuncOf(
@@ -117,38 +117,50 @@ func (g *GUI) Add(obj interface{}, fieldName string) *controller {
 	return c
 }
 
-type controller struct {
+type Controller struct {
 	JSController js.Value
 	changeFunc   func(js.Value)
 	listenerFunc func()
 }
 
-func (c *controller) Min(x float64) *controller {
+func (c *Controller) Min(x float64) *Controller {
 	c.JSController = c.JSController.Call("min", x)
 	c.changeFunc(c.JSController)
 	return c
 }
 
-func (c *controller) Max(x float64) *controller {
+func (c *Controller) Max(x float64) *Controller {
 	c.JSController = c.JSController.Call("max", x)
 	c.changeFunc(c.JSController)
 	return c
 }
 
-func (c *controller) Step(x float64) *controller {
+func (c *Controller) Step(x float64) *Controller {
 	c.JSController = c.JSController.Call("step", x)
 	c.changeFunc(c.JSController)
 	return c
 }
 
-func (c *controller) Name(x string) *controller {
+func (c *Controller) Name(x string) *Controller {
 	c.JSController = c.JSController.Call("name", x)
 	c.changeFunc(c.JSController)
 	return c
 }
 
-func (c *controller) OnChange(fun func()) *controller {
+func (c *Controller) OnChange(fun func()) *Controller {
 	c.listenerFunc = fun
+
+	return c
+}
+
+func (c *Controller) SetValue(val interface{}) *Controller {
+	c.JSController.Call("setValue", val)
+
+	/*
+		onChange := c.JSController.Get("__onChange").Bool()
+		c.JSController.Call("setValue", val)
+		onChange := c.JSController.Get("__onChange")
+	"*/
 
 	return c
 }
