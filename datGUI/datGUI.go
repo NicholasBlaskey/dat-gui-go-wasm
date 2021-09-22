@@ -123,19 +123,19 @@ type controller struct {
 	listenerFunc func()
 }
 
-func (c *controller) Min(x int) *controller {
+func (c *controller) Min(x float64) *controller {
 	c.JSController = c.JSController.Call("min", x)
 	c.changeFunc(c.JSController)
 	return c
 }
 
-func (c *controller) Max(x int) *controller {
+func (c *controller) Max(x float64) *controller {
 	c.JSController = c.JSController.Call("max", x)
 	c.changeFunc(c.JSController)
 	return c
 }
 
-func (c *controller) Step(x int) *controller {
+func (c *controller) Step(x float64) *controller {
 	c.JSController = c.JSController.Call("max", x)
 	c.changeFunc(c.JSController)
 	return c
