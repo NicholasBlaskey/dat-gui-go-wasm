@@ -136,7 +136,7 @@ func (c *controller) Max(x float64) *controller {
 }
 
 func (c *controller) Step(x float64) *controller {
-	c.JSController = c.JSController.Call("max", x)
+	c.JSController = c.JSController.Call("step", x)
 	c.changeFunc(c.JSController)
 	return c
 }
