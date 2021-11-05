@@ -36,12 +36,20 @@ func (g *GUI) AddFolder(name string) *GUI {
 	return &GUI{JSGUI: subJSGUI}
 }
 
+func (g *GUI) RemoveFolder(folder *GUI) {
+	g.JSGUI.Call("removeFolder", folder.JSGUI)
+}
+
 func (g *GUI) Open() {
 	g.JSGUI.Call("open")
 }
 
 func (g *GUI) Close() {
 	g.JSGUI.Call("close")
+}
+
+func (g *GUI) Destroy() {
+	g.JSGUI.Call("destroy")
 }
 
 func (g *GUI) Add(obj interface{}, fieldName string) *Controller {
@@ -155,12 +163,6 @@ func (c *Controller) OnChange(fun func()) *Controller {
 
 func (c *Controller) SetValue(val interface{}) *Controller {
 	c.JSController.Call("setValue", val)
-
-	/*
-		onChange := c.JSController.Get("__onChange").Bool()
-		c.JSController.Call("setValue", val)
-		onChange := c.JSController.Get("__onChange")
-	"*/
 
 	return c
 }
