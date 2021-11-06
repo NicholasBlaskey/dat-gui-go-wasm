@@ -31,6 +31,10 @@ func New() *GUI {
 	return &GUI{JSGUI: js.Global().Get("dat").Get("GUI").New()}
 }
 
+func NewWithOptions(options map[string]interface{}) *GUI {
+	return &GUI{JSGUI: js.Global().Get("dat").Get("GUI").New(js.ValueOf(options))}
+}
+
 func (g *GUI) AddFolder(name string) *GUI {
 	subJSGUI := g.JSGUI.Call("addFolder", name)
 	return &GUI{JSGUI: subJSGUI}
